@@ -120,6 +120,25 @@ export default function Profile() {
     }
   };
 
+  const handleListingDelete = async (listingId) => {
+    try {
+      const res = await fetch(`/api/listing/delete/${listingId}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        console.log(data.message);
+        return;
+      }
+
+      setUserListings((prev) =>
+        prev.filter((listing) => listing._id !== listingId)
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
 
   return (
     <div className='p-3 max-w-lg mx-auto'>
@@ -156,7 +175,7 @@ export default function Profile() {
       <p className='text-green-700 mt-5'>{showListingsError ? "Error showing listings ": ""}</p>
        {userListing && userListing.length > 0 && 
        <div className='flex flex-col gap-4'>
-        <h1 className=' mt-7 text-2xl font-semibold text-center'>Ypur Listings</h1>
+        <h1 className=' mt-7 text-2xl font-semibold text-center'>Your Listings</h1>
         {userListing.map((listing) => (
           <div key={listing._id} className='border rounded-lg p-3 flex justify-between items-center gap-4'>
             <Link to={`/listing/${listing._id}`}>
@@ -176,6 +195,7 @@ export default function Profile() {
               <div className='flex flex-col item-center'>
                 <button                  
                   className='text-red-700 uppercase'
+                  onClick={() => handleListingDelete(listing._id)}
                 >
                   Delete
                 </button>
