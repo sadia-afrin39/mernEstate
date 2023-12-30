@@ -32,7 +32,7 @@ app.use('/api/listing', listingRouter);
 app.use(express.static(path.join(__dirname, '/client/build')));  //run the client side on server
 
 app.get('*',(req,res) => {
-    res.sendFile(path.join(__dirname, 'client','build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'client','build','public','index.html'));
 })
 
 //Middleware
